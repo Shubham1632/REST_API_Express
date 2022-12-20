@@ -33,3 +33,20 @@ app.get("/names", (req, res) => {
     res.send(names);
   });
 });
+
+app.post("/addname", (req, res) => {
+  console.log(req.body.name);
+  console.log(req.body.college);
+
+  const newentry = new User({
+    name: req.body.name,
+    college: req.body.college,
+  });
+  newentry.save((err) => {
+    if (!err) {
+      res.send("sucsesfully stored a new entry");
+    } else {
+      res.send(err);
+    }
+  });
+});

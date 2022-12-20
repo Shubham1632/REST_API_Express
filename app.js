@@ -28,25 +28,26 @@ const userschema = {
 
 const User = mongoose.model("User", userschema);
 
-app.get("/names", (req, res) => {
-  User.find((err, names) => {
-    res.send(names);
-  });
-});
+app
+  .route("/home")
+  .get((req, res) => {
+    User.find((err, names) => {
+      res.send(names);
+    });
+  })
+  .post((req, res) => {
+    console.log(req.body.name);
+    console.log(req.body.college);
 
-app.post("/addname", (req, res) => {
-  console.log(req.body.name);
-  console.log(req.body.college);
-
-  const newentry = new User({
-    name: req.body.name,
-    college: req.body.college,
+    const newentry = new User({
+      name: req.body.name,
+      college: req.body.college,
+    });
+    newentry.save((err) => {
+      if (!err) {
+        res.send("sucsesfully stored a new entry");
+      } else {
+        res.send(err);
+      }
+    });
   });
-  newentry.save((err) => {
-    if (!err) {
-      res.send("sucsesfully stored a new entry");
-    } else {
-      res.send(err);
-    }
-  });
-});
